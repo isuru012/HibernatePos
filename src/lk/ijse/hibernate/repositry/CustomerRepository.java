@@ -5,8 +5,9 @@ import lk.ijse.hibernate.util.SessionFactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.hibernate.type.StandardBasicTypes;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -17,12 +18,17 @@ public class CustomerRepository {
         session = SessionFactoryConfiguration.getInstance().getSession();
     }
 
-    public ArrayList allCustomers() {
+    public ArrayList<Customer> allCustomers() {
         Transaction transaction = session.beginTransaction();
         try {
-            ArrayList arrayList = (ArrayList) session.createQuery("from AppInitializer").list();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Customer> criteria = builder.createQuery(Customer.class);
+            criteria.from(Customer.class);
+            ArrayList<Customer> products = (ArrayList<Customer>) session.createQuery(criteria).getResultList();
+
+
             transaction.commit();
-            return arrayList;
+            return products;
         } catch (Exception ex) {
             transaction.rollback();
             System.out.println(ex);

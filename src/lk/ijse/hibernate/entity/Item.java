@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_generator")
-    @SequenceGenerator(name="item_generator", sequenceName = "item_seq", allocationSize=50)
+    @SequenceGenerator(name="item_generator", sequenceName = "item_seq", allocationSize=1)
     @Column(name = "code", updatable = false, nullable = false)
 
     private int code;

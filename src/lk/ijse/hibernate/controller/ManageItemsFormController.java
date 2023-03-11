@@ -38,7 +38,7 @@ public class ManageItemsFormController {
     public JFXTextField txtUnitPrice;
     public JFXButton btnAddNewItem;
 
-    ItemRepository itemRepository=new ItemRepository();
+    ItemRepository itemRepository;
 
 
     public void initialize() {
@@ -74,15 +74,15 @@ public class ManageItemsFormController {
 
     private void loadAllItems() {
         tblItems.getItems().clear();
+        itemRepository=new ItemRepository();
 
-        ArrayList arrayList= itemRepository.allItems();
-        Iterator iterator=arrayList.iterator();
+        ArrayList <Item> arrayList= itemRepository.allItems();
+        for (Item item:arrayList) {
+            tblItems.getItems().add(new ItemTM(item.getCode(), item.getDescription(),item.getUnitPrice(),
+                    item.getQtyOnHand()));
 
-
-        while (iterator.hasNext()) {
-            tblItems.getItems().add(new ItemTM(Integer.parseInt(String.valueOf(arrayList.get(0))), String.valueOf(arrayList.get(1)),
-                    BigDecimal.valueOf((Double) arrayList.get(2)), Integer.parseInt(String.valueOf(arrayList.get(3)))));
         }
+
     }
 
     private void initUI() {
@@ -116,9 +116,9 @@ public class ManageItemsFormController {
         txtUnitPrice.setDisable(false);
         txtQtyOnHand.setDisable(false);
         txtCode.clear();
-        Item item=new Item();
+        itemRepository=new ItemRepository();
 
-        txtCode.setText(String.valueOf(item.getCode()));
+        txtCode.setText(String.valueOf(itemRepository.getNext()));
 
         txtDescription.clear();
         txtUnitPrice.clear();
@@ -140,6 +140,7 @@ public class ManageItemsFormController {
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Item WHERE code=?");
             pstm.setString(1, code);
             pstm.executeUpdate()*/;
+            itemRepository=new ItemRepository();
             itemRepository.deleteItem(code);
 
 
@@ -177,7 +178,7 @@ public class ManageItemsFormController {
 
         if (btnSave.getText().equalsIgnoreCase("save")) {
             try {
-                if (existItem(code)) {
+                if (!existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
                 //Save Item
@@ -188,8 +189,9 @@ public class ManageItemsFormController {
                 pstm.setBigDecimal(3, unitPrice);
                 pstm.setInt(4, qtyOnHand);
                 pstm.executeUpdate();*/
-
+                itemRepository=new ItemRepository();
                 Item item=new Item(code,description,unitPrice,qtyOnHand);
+                itemRepository.saveItem(item);
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
 
             } catch (SQLException e) {
@@ -212,7 +214,7 @@ public class ManageItemsFormController {
                 pstm.setInt(3, qtyOnHand);
                 pstm.setString(4, code);
                 pstm.executeUpdate();*/
-
+                itemRepository=new ItemRepository();
                 Item item=new Item(code,description,unitPrice,qtyOnHand);
 
                 itemRepository.updateItem(item);
@@ -238,7 +240,7 @@ public class ManageItemsFormController {
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
-
+        itemRepository=new ItemRepository();
         return itemRepository.existItem(code);
     }
 

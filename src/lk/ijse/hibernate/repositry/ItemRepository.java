@@ -5,7 +5,11 @@ import lk.ijse.hibernate.entity.Item;
 import lk.ijse.hibernate.util.SessionFactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class ItemRepository {
@@ -16,12 +20,17 @@ public class ItemRepository {
 
     }
 
-    public ArrayList allItems() {
+    public ArrayList<Item> allItems() {
         Transaction transaction = session.beginTransaction();
         try {
-            ArrayList arrayList = (ArrayList) session.createQuery("from AppInitializer").list();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Item> criteria = builder.createQuery(Item.class);
+            criteria.from(Item.class);
+            ArrayList<Item> products = (ArrayList<Item>) session.createQuery(criteria).getResultList();
+
+
             transaction.commit();
-            return arrayList;
+            return products;
         } catch (Exception ex) {
             transaction.rollback();
             System.out.println(ex);
@@ -30,6 +39,24 @@ public class ItemRepository {
         }
 
     }
+
+    public int saveItem(Item item) {
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            int id = (Integer) session.save(item);
+            transaction.commit();
+            return id;
+        } catch (Exception ex) {
+            transaction.rollback();
+            System.out.println(ex);
+            ex.printStackTrace();
+            return -1;
+        }
+
+
+    }
+
     public boolean deleteItem(int id){
         Transaction transaction = session.beginTransaction();
         try {
@@ -70,5 +97,11 @@ public class ItemRepository {
             ex.printStackTrace();
             return false;
         }
+    }
+    public BigInteger getNext() {
+        Query query =
+                session.createSQLQuery("select item_seq.next_val as num from item_seq");
+
+        return (BigInteger) query.uniqueResult();
     }
 }

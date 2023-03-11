@@ -17,19 +17,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.hibernate.entity.Customer;
 import lk.ijse.hibernate.repositry.CustomerRepository;
-import lk.ijse.hibernate.util.SessionFactoryConfiguration;
 import lk.ijse.hibernate.view.tdm.CustomerTM;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
-
 
 
 public class ManageCustomersFormController {
@@ -77,12 +71,27 @@ public class ManageCustomersFormController {
         customerRepository=new CustomerRepository();
         tblCustomers.getItems().clear();
         /*Get all customers*/
-        ArrayList arrayList= customerRepository.allCustomers();
+        ArrayList<Customer> arrayList= customerRepository.allCustomers();
         Iterator iterator=arrayList.iterator();
+        System.out.println(arrayList);
+        /*for (Object array:arrayList) {
+            tblCustomers.getItems().add(new CustomerTM(
+                    String.valueOf(arrayList.get(1)), String.valueOf(arrayList.get(2))));
+        }*/
 
-        while (iterator.hasNext()) {
-            tblCustomers.getItems().add(new CustomerTM((Integer) arrayList.get(0), String.valueOf(arrayList.get(1)), String.valueOf(arrayList.get(2))));
+        System.out.println(arrayList.size());
+        System.out.println(iterator);
+        for (Customer customer:arrayList){
+            tblCustomers.getItems().add(new CustomerTM(customer.getId(),
+                    customer.getName(), customer.getAddress()));
+
         }
+        /*while (iterator.hasNext()) {
+
+            tblCustomers.getItems().add(new CustomerTM(arrayList.get(i).getId(),
+                    arrayList.get(i).getName(), arrayList.get(i).getAddress()));
+            i++;
+        }*/
 
 
     }
@@ -117,7 +126,7 @@ public class ManageCustomersFormController {
         txtCustomerName.setDisable(false);
         txtCustomerAddress.setDisable(false);
         txtCustomerId.clear();
-        System.out.println(String.valueOf(customerRepository.getNext()));
+
 
         txtCustomerId.setText(String.valueOf(customerRepository.getNext()));
         txtCustomerName.clear();
