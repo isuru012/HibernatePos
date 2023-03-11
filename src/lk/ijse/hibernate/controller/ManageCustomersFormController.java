@@ -43,7 +43,7 @@ public class ManageCustomersFormController {
     public JFXButton btnAddNewCustomer;
 
 
-    CustomerRepository customerRepository=new CustomerRepository();
+    CustomerRepository customerRepository;
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -59,7 +59,7 @@ public class ManageCustomersFormController {
 
             if (newValue != null) {
                 Customer customer=new Customer();
-                txtCustomerId.setText(String.valueOf(customer.getId()));
+                txtCustomerId.setText(String.valueOf(tblCustomers.getSelectionModel().getSelectedItem().getId()));
                 txtCustomerName.setText(newValue.getName());
                 txtCustomerAddress.setText(newValue.getAddress());
 
@@ -74,6 +74,7 @@ public class ManageCustomersFormController {
     }
 
     private void loadAllCustomers() {
+        customerRepository=new CustomerRepository();
         tblCustomers.getItems().clear();
         /*Get all customers*/
         ArrayList arrayList= customerRepository.allCustomers();
@@ -110,11 +111,15 @@ public class ManageCustomersFormController {
     }
 
     public void btnAddNew_OnAction(ActionEvent actionEvent) {
+        customerRepository=new CustomerRepository();
         txtCustomerId.setDisable(false);
+
         txtCustomerName.setDisable(false);
         txtCustomerAddress.setDisable(false);
         txtCustomerId.clear();
-        //txtCustomerId.setText(Customer.getId());
+        System.out.println(String.valueOf(customerRepository.getNext()));
+
+        txtCustomerId.setText(String.valueOf(customerRepository.getNext()));
         txtCustomerName.clear();
         txtCustomerAddress.clear();
         txtCustomerName.requestFocus();
@@ -142,7 +147,7 @@ public class ManageCustomersFormController {
         if (btnSave.getText().equalsIgnoreCase("save")) {
             /*Save Customer*/
             try {
-                if (existCustomer(id)) {
+                if (!existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, id + " already exists").show();
                 }
                /* Connection connection = DBConnection.getDbConnection().getConnection();
@@ -151,6 +156,7 @@ public class ManageCustomersFormController {
                 pstm.setString(2, name);
                 pstm.setString(3, address);
                 pstm.executeUpdate();*/
+                customerRepository=new CustomerRepository();
                 Customer customer=new Customer(id,name,address);
                 customerRepository.saveCustomer(customer);
 
@@ -175,6 +181,7 @@ public class ManageCustomersFormController {
                 pstm.setString(2, address);
                 pstm.setString(3, id);
                 pstm.executeUpdate();*/
+                customerRepository=new CustomerRepository();
                 Customer customer=new Customer(id,name,address);
                customerRepository.updateCustomer(customer);
 
@@ -195,6 +202,7 @@ public class ManageCustomersFormController {
 
 
     boolean existCustomer(int id) throws SQLException, ClassNotFoundException {
+        customerRepository=new CustomerRepository();
         return customerRepository.existCustomer(id);
     }
 
@@ -210,6 +218,7 @@ public class ManageCustomersFormController {
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
             pstm.setString(1, id);
             pstm.executeUpdate();*/
+            customerRepository=new CustomerRepository();
 
             customerRepository.deleteCustomer(id);
 

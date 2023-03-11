@@ -33,18 +33,18 @@ public class CustomerRepository {
 
     }
 
-    public Long saveCustomer(Customer customer) {
+    public int saveCustomer(Customer customer) {
         Transaction transaction = session.beginTransaction();
 
         try {
-            Long id = (Long) session.save(customer);
+            int id = (Integer) session.save(customer);
             transaction.commit();
             return id;
         } catch (Exception ex) {
             transaction.rollback();
             System.out.println(ex);
             ex.printStackTrace();
-            return -1L;
+            return -1;
         }
 
 
@@ -53,7 +53,7 @@ public class CustomerRepository {
     public boolean updateCustomer(Customer customer){
         Transaction transaction = session.beginTransaction();
         try {
-            session.update(customer);
+            session.merge(customer);
             transaction.commit();
             session.close();
             return true;
@@ -92,12 +92,11 @@ public class CustomerRepository {
             return false;
         }
     }
-    /*int getNext() {
+    public BigInteger getNext() {
         Query query =
-                session.createSQLQuery("select hibernate_sequence.nextval as num from customer")
-                        .addScalar("num", StandardBasicTypes.INTEGER);
+                session.createSQLQuery("select customer_seq.next_val as num from customer_seq");
 
-        return  query.uniqueResult().;
-    }*/
+        return (BigInteger) query.uniqueResult();
+    }
 
 }
