@@ -20,6 +20,7 @@ import lk.ijse.hibernate.repositry.CustomerRepository;
 import lk.ijse.hibernate.util.SessionFactoryConfiguration;
 import lk.ijse.hibernate.view.tdm.CustomerTM;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,7 +58,8 @@ public class ManageCustomersFormController {
             btnSave.setDisable(newValue == null);
 
             if (newValue != null) {
-                txtCustomerId.setText(newValue.getId());
+                Customer customer=new Customer();
+                txtCustomerId.setText(String.valueOf(customer.getId()));
                 txtCustomerName.setText(newValue.getName());
                 txtCustomerAddress.setText(newValue.getAddress());
 
@@ -78,7 +80,7 @@ public class ManageCustomersFormController {
         Iterator iterator=arrayList.iterator();
 
         while (iterator.hasNext()) {
-            tblCustomers.getItems().add(new CustomerTM(String.valueOf(arrayList.get(0)), String.valueOf(arrayList.get(1)), String.valueOf(arrayList.get(2))));
+            tblCustomers.getItems().add(new CustomerTM((Integer) arrayList.get(0), String.valueOf(arrayList.get(1)), String.valueOf(arrayList.get(2))));
         }
 
 
@@ -112,7 +114,7 @@ public class ManageCustomersFormController {
         txtCustomerName.setDisable(false);
         txtCustomerAddress.setDisable(false);
         txtCustomerId.clear();
-        txtCustomerId.setText(Customer.getId());
+        //txtCustomerId.setText(Customer.getId());
         txtCustomerName.clear();
         txtCustomerAddress.clear();
         txtCustomerName.requestFocus();
@@ -123,7 +125,7 @@ public class ManageCustomersFormController {
 
 
     public void btnSave_OnAction(ActionEvent actionEvent) {
-        String id = txtCustomerId.getText();
+        int id = Integer.parseInt(txtCustomerId.getText());
         String name = txtCustomerName.getText();
         String address = txtCustomerAddress.getText();
 
@@ -162,6 +164,7 @@ public class ManageCustomersFormController {
 
         } else {
             /*Update customer*/
+
             try {
                 if (!existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
@@ -191,14 +194,14 @@ public class ManageCustomersFormController {
     }
 
 
-    boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
+    boolean existCustomer(int id) throws SQLException, ClassNotFoundException {
         return customerRepository.existCustomer(id);
     }
 
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
         /*Delete Customer*/
-        String id = tblCustomers.getSelectionModel().getSelectedItem().getId();
+        int id = tblCustomers.getSelectionModel().getSelectedItem().getId();
         try {
             if (!existCustomer(id)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
@@ -250,10 +253,11 @@ public class ManageCustomersFormController {
 
     }*/
 
-    private String getLastCustomerId() {
+   /* private String getLastCustomerId() {
         List<CustomerTM> tempCustomersList = new ArrayList<>(tblCustomers.getItems());
         Collections.sort(tempCustomersList);
         return tempCustomersList.get(tempCustomersList.size() - 1).getId();
-    }
+    }*/
+
 
 }

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 
 public class ItemTM  {
-    private String code;
+    private int code;
     private String description;
     private BigDecimal unitPrice;
     private int qtyOnHand;
@@ -13,18 +13,18 @@ public class ItemTM  {
     public ItemTM() {
     }
 
-    public ItemTM(String code, String description, BigDecimal unitPrice, int qtyOnHand) {
+    public ItemTM(int code, String description, BigDecimal unitPrice, int qtyOnHand) {
         this.code = code;
         this.description = description;
         this.unitPrice = unitPrice;
         this.qtyOnHand = qtyOnHand;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

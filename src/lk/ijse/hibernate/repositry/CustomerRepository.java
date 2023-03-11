@@ -4,7 +4,10 @@ import lk.ijse.hibernate.entity.Customer;
 import lk.ijse.hibernate.util.SessionFactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.hibernate.type.StandardBasicTypes;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class CustomerRepository {
@@ -62,7 +65,7 @@ public class CustomerRepository {
         }
     }
 
-    public boolean deleteCustomer(String id){
+    public boolean deleteCustomer(int id){
         Transaction transaction = session.beginTransaction();
         try {
             Customer customer=session.load(Customer.class,id);
@@ -77,7 +80,7 @@ public class CustomerRepository {
         }
     }
 
-    public boolean existCustomer(String id){
+    public boolean existCustomer(int id){
         Transaction transaction = session.beginTransaction();
         try {
             session.get(Customer.class,id);
@@ -89,6 +92,12 @@ public class CustomerRepository {
             return false;
         }
     }
+    /*int getNext() {
+        Query query =
+                session.createSQLQuery("select hibernate_sequence.nextval as num from customer")
+                        .addScalar("num", StandardBasicTypes.INTEGER);
 
+        return  query.uniqueResult().;
+    }*/
 
 }

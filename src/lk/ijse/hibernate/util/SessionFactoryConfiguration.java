@@ -1,6 +1,7 @@
 package lk.ijse.hibernate.util;
 
 import lk.ijse.hibernate.entity.Customer;
+import lk.ijse.hibernate.entity.Item;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +14,8 @@ public class SessionFactoryConfiguration {
 
     private SessionFactoryConfiguration(){
 
-        sessionFactory = new Configuration().configure().addAnnotatedClass(Customer.class).buildSessionFactory();
+        sessionFactory = new Configuration().configure().addAnnotatedClass(Customer.class)
+                .addAnnotatedClass(Item.class).buildSessionFactory();
     }
 
     public static SessionFactoryConfiguration getInstance() {

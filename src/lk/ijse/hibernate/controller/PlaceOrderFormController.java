@@ -93,10 +93,8 @@ public class PlaceOrderFormController {
 
             if (newValue != null) {
                 try {
-                    */
-/*Search Customer*//*
 
-                    Connection connection = DBConnection.getDbConnection().getConnection();
+
                     try {
                         if (!existCustomer(newValue + "")) {
 //                            "There is no such customer associated with the id " + id
@@ -131,8 +129,7 @@ public class PlaceOrderFormController {
 
             if (newItemCode != null) {
 
-                */
-/*Find Item*//*
+Find Item
 
                 try {
                     if (!existItem(newItemCode + "")) {
@@ -235,8 +232,7 @@ public class PlaceOrderFormController {
 
     private void loadAllItemCodes() {
         try {
-            */
-/*Get all items*//*
+Get all items
 
             Connection connection = DBConnection.getDbConnection().getConnection();
             Statement stm = connection.createStatement();
@@ -337,16 +333,14 @@ public class PlaceOrderFormController {
     }
 
     public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
-        */
-/*Transaction*//*
+Transaction
 
         Connection connection = null;
         try {
             connection = DBConnection.getDbConnection().getConnection();
             PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `Orders` WHERE oid=?");
             stm.setString(1, orderId);
-            */
-/*if order id already exist*//*
+if order id already exist
 
             if (stm.executeQuery().next()) {
 

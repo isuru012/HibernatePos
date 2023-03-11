@@ -4,42 +4,47 @@ import lk.ijse.hibernate.util.StringPrefixSequenceIdGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity(name = "customer")
+@Entity
+@Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "hibernate_pos")
-    @GenericGenerator(name = "hibernate_pos",
-    strategy = "org.thoughts.on.java.generators.StringPrefixSequenceIdGenerator",
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_generator")
+    @SequenceGenerator(name="customer_generator", sequenceName = "customer_seq", allocationSize=50)
+    @Column(name = "id", updatable = false, nullable = false)
 
-    parameters = {
-            @Parameter(name = StringPrefixSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
-            @Parameter(name = StringPrefixSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "C00-"),
-            @Parameter(name = StringPrefixSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%03d")
-    }
-    )
-    private static String id;
+
+
+//
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "hibernate_pos")
+//    @GenericGenerator(name = "hibernate_pos",
+//    strategy = "org.thoughts.on.java.generators.StringPrefixSequenceIdGenerator",
+//
+//    parameters = {
+//            @Parameter(name = StringPrefixSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
+//            @Parameter(name = StringPrefixSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "C00-"),
+//            @Parameter(name = StringPrefixSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%03d")
+//    }
+//)
+    private  int id;
     private String name;
     private String address;
 
     public Customer() {
     }
 
-    public Customer(String id, String name, String address) {
+    public Customer(int id, String name, String address) {
         this.setId(id);
         this.setName(name);
         this.setAddress(address);
     }
 
-    public static String getId() {
+    public  int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
