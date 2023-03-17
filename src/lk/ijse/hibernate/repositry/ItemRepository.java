@@ -75,10 +75,10 @@ public class ItemRepository {
     public boolean updateItem(Item item){
         Transaction transaction = session.beginTransaction();
         try {
-            session.update(item);
+            session.merge(item);
             transaction.commit();
-            session.close();
             return true;
+
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println(ex);
@@ -103,5 +103,19 @@ public class ItemRepository {
                 session.createSQLQuery("select item_seq.next_val as num from item_seq");
 
         return (BigInteger) query.uniqueResult();
+    }
+
+    public Item getItemById(int id){
+        Transaction transaction = session.beginTransaction();
+        try {
+            Item load = session.load(Item.class, id);
+            transaction.commit();
+            return  load;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex);
+            session.close();
+            return null;
+        }
     }
 }

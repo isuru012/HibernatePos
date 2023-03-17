@@ -72,15 +72,10 @@ public class ManageCustomersFormController {
         tblCustomers.getItems().clear();
         /*Get all customers*/
         ArrayList<Customer> arrayList= customerRepository.allCustomers();
-        Iterator iterator=arrayList.iterator();
-        System.out.println(arrayList);
         /*for (Object array:arrayList) {
             tblCustomers.getItems().add(new CustomerTM(
                     String.valueOf(arrayList.get(1)), String.valueOf(arrayList.get(2))));
         }*/
-
-        System.out.println(arrayList.size());
-        System.out.println(iterator);
         for (Customer customer:arrayList){
             tblCustomers.getItems().add(new CustomerTM(customer.getId(),
                     customer.getName(), customer.getAddress()));

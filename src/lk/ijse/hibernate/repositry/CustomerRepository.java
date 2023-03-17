@@ -104,5 +104,18 @@ public class CustomerRepository {
 
         return (BigInteger) query.uniqueResult();
     }
+    public Customer getCustomerById(int id){
+        Transaction transaction = session.beginTransaction();
+        try {
+            Customer load = session.load(Customer.class, id);
+            transaction.commit();
+            return  load;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex);
+            session.close();
+            return null;
+        }
+    }
 
 }

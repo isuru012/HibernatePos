@@ -4,24 +4,24 @@ import java.io.Serializable;
 
 
 public class CustomerDTO implements Serializable {
-    private String id;
+    private int id;
     private String name;
     private String address;
 
     public CustomerDTO() {
     }
 
-    public CustomerDTO(String id, String name, String address) {
+    public CustomerDTO(int id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

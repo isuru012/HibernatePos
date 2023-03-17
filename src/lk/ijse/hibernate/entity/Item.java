@@ -2,6 +2,8 @@ package lk.ijse.hibernate.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Item")
@@ -10,12 +12,21 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_generator")
     @SequenceGenerator(name="item_generator", sequenceName = "item_seq", allocationSize=1)
     @Column(name = "code", updatable = false, nullable = false)
-
     private int code;
 
     private String description;
     private BigDecimal unitPrice;
     private int qtyOnHand;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item")
+    private List<OrderDetail> orderDetails=new ArrayList<>();
+
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
 
     public Item() {
     }

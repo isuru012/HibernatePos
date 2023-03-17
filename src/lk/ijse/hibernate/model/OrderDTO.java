@@ -7,16 +7,16 @@ import java.time.LocalDate;
 
 
 public class OrderDTO  {
-    private String orderId;
+    private int orderId;
     private LocalDate orderDate;
-    private String customerId;
+    private int customerId;
     private String customerName;
     private BigDecimal orderTotal;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(String orderId, LocalDate orderDate, String customerId, String customerName, BigDecimal orderTotal) {
+    public OrderDTO(int orderId, LocalDate orderDate, int customerId, String customerName, BigDecimal orderTotal) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerId = customerId;
@@ -24,11 +24,11 @@ public class OrderDTO  {
         this.orderTotal = orderTotal;
     }
 
-    public String getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
@@ -40,11 +40,11 @@ public class OrderDTO  {
         this.orderDate = orderDate;
     }
 
-    public String getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
